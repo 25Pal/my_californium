@@ -1,51 +1,71 @@
 const express = require('express');
 const router = express.Router();
-// const movies=require('../movie/movies');
-// const logger =require('../logger/logger');
-// const helper=require('../util/helper');
-const formatter=require('../validator/formatter')
-const lodash =require('lodash')
-router.get('/test-me', function (req, res) {
-   //  helper.printDate1();
-   //  helper.printMonth1();
-   //  helper.getBatchInfo1(helper.batchname1,helper.week1,helper.day1);
-   //  logger.welcome1("pallavi");
-   //  res.send("assignment1");
-   //  res.send("assignment2");
+router.get("/sol1",function(req,res){
+    const arr1=[1,2,3,4,6,7];
+    let sum =arr1.length+1;//7
+    let s=sum*(sum+1)/2;//7*(8)/2== 28
+    let a=0;
+    for(let i=0;i<arr1.length;i++)
+    {
+        a+=arr1[i];
+    }console.log(s-a);
+});
+router.get("/sol2",function(req,res){
+    const arr=[33,34,35,37,38];
+    let sum =(arr.length+1)*(arr[0]+arr[arr.length-1])//logic7*(33)+
+    let s=sum/2;
+    let a=0;
+    for(let i=0;i<arr.length;i++)
+    {
+        a+=arr[i]
+    }console.log(s-a);
+})
+router.get("/movies",function(req,res){
+    const move=["Baghban","Interstealler","Vivah","Border"];
+    res.send("Movies ="+move)
+})
 
-   //PROBLEM 3
-   // formatter.trim1(formatter.str1);
-   // console.log("Problem 3rd Run sucesfully");
-   // res.send("Problem 3rd Run sucesfully "+formatter.trim1(formatter.str1));
-
-   //PROBLEM 3.1 toLowerCase
-   // console.log("changed to LowerCase")
-   // res.send("Problem 3rd Run sucesfully..Chaged to LowerCase :- "+formatter.string1.toLowerCase());
-   
-   //PROBLEM 3.2 toUpperCase
-   // console.log("changed to UpperrCase")
-   // res.send("Problem 3rd Run sucesfully..Chaged to UpperCase = "+formatter.string1.toUpperCase());
 
 
-   //PROBLEM 4
-   const arr =['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-   //console.log(lodash.chunk(arr,3))
-   
-   // const arr1=[1,3,5,7,9,11,13,15,17,19];
-   // const arr2=[2,3,45,6,3,2,1,14,5,6,2,5];
-   // const arr3=[1,2,4,5]
-   // const arr4=[1,2,4,3,5]
-   // const arr5=[1,2,4,5,0]
-   const arr6=[["horror","The Shining"],["drama","Titanic"],["thriller","Shutter Island"],["fantasy","Pans Labyrinth"]];
-   //console.log(lodash.tail(arr1))
-   //console.log(lodash.union(arr1,arr2,arr3,arr4,arr5));
-   console.log(lodash.fromPairs(arr6));
-   res.send("The subarray is = ");
+router.get("/movies/:indexNumber",function(req,res){
+    const index = req.params.indexNumber;
+    const m=["Baghban","Interstealler","Vivah","Border"];
+    //res.send(m[index]);
+    if (index> m.length-1 || index<0 )
+    {
+        res.send("Not defined");
+    }
+    else
+    {
+        res.send(m[index]);
+    }
+});
+router.get('/films/:filmId',function(res,req){
+const index=res.params.filmId;
+    const films = [ {
+        'id': 1,
+        'name': 'The shining'   
+    }, {
+        'id': 2,
+        'name': 'Incendies' 
+    }, {
+        'id': 3,
+        'name': 'Rang de basanti' 
+    }, {
+        'id': 202,
+        'name': 'Finding Nemo' 
+    }];
+    //req.send(films);
+    
+             if(index > 0 && index <=films.length)
+             {
+                req.send(films[index-1]);
+             }
+             else{
+                req.send("Undefind");
+             }
+    
+})
 
-   });
-   router.get('/test-you', function (req, res) {
-    //console.log(movies.move1(movies.moviearr1));
-    console.log(movies.move1(movies.moviearr1))
-    res.send("Movies are : ");
-   });
+
 module.exports = router;
