@@ -1,13 +1,28 @@
-// const linkJaiKisanData2=require('../models/cardModel')
-// const linkJaiKisanData1=require('../models/customerModel')
-// const checkcustomer=async function(req,res)({
-//    let b = req.body;
-//    let mob=b.mobileNo;
-// //    if(b.mobileNo )
-// //    {
-// //      return res.send("Error :It is not ten Digit number");
-// //    }
-// //    let a=body.emailId;
-   
+const phone=function(req,res,next)
+{
+    let body =req.body;
+    let a=body.mobileNo;
+    if(a==null || a== undefined)
+    {
+        return res.send("ERROR : Number is Required !");
+    }
+    if(body.mobileNo.length ==10 && body.mobileNo == parseInt(body.mobileNo))
+    {
+        next();
+    }
+    else{
+        res.send("ERROR :Enter valid Number");
+    }
+};
 
-// })
+const cardid=function(req,res,next)
+{
+    let body = req.body;
+    if(body.cardNumber ==null|| body.cardNumber==undefined)
+    {
+        res.send("ERROR : Card Number ids required !");
+    }
+    next();
+}
+
+module.exports={phone,cardid}

@@ -1,16 +1,12 @@
 const linkJaiKisanData2=require('../models/cardModel')
 const linkJaiKisanData1=require('../models/customerModel')
+
 //functions
 //******************Customer*************************************8*/
 const createCustomer=async function(req,res)
 {
     let body=req.body;
-//checknumber
-    let a=body.mobileNo;
-    if(a==null || a== undefined)
-    {
-        return res.send("ERROR : Number is Required !");
-    }
+
 //check email
 let b=body.emailId
     if(b==null || b==undefined)
@@ -48,8 +44,15 @@ const deleteCustomer=async function(req,res)
 const createCard=async function (req,res)
 {
     let body=(req.body);
+   
+    if(body.customerId ==null )
+    {
+        return res.send("Error : This is Required !!")
+    }
     let a=body.customerId
-    if(linkJaiKisanData1._id != a)
+    let x= await linkJaiKisanData1.findOne({_id:a});
+    
+    if(x==null)
     {
         return res.send("Error : No such customer is available with this ID !!");
     }
@@ -58,7 +61,7 @@ const createCard=async function (req,res)
 }
 const getAllCard=async function(req,res)
 {
-    let get=await linkJaiKisanData2.find();
+    let get=await linkJaiKisanData2.find().populate('customerId');
     res.send(get);
 }
 
