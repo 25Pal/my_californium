@@ -3,15 +3,19 @@ const jwt=require('jsonwebtoken');
 
 const userCreate= async function(req,res)
 {
-    const body=req.body;
-    const a=await usermodel.create(body);
-    res.send(a);
+    try{const body=req.body;
+        const a=await usermodel.create(body);
+        return res.send(a);
+        }catch(error)
+            {
+                res.status(500).send(error.message);
+            }
 }
 
 
 const loginuser=async function(req,res)
 {
-    const body =req.body;
+    try{const body =req.body;
     const checkuser= await usermodel.findOne({emailId:body.emailId,password:body.password});
     //console.log(checkuser);
     if(!checkuser)
@@ -22,6 +26,11 @@ const loginuser=async function(req,res)
     const token= await jwt.sign(paylod,'myFirstToken');
    // req.header['x-auth-token']=token; \\ res.setHeader('x-auth-token',token);
     res.send({status: "Sucessfully Logged in" ,token :token});
+}catch(error)
+{
+    res.send(error.message);
+}
+
 
 }
 //************************************************************ */
@@ -32,10 +41,14 @@ const loginuser=async function(req,res)
 // If present, check that the token is valid.
 const getUser=async function(req,res)
 {
-    const a= req.params.userId;
+    try{const a= req.params.userId;
     const user=await usermodel.findOne({_id:a});
     const token = req.token;
     res.send(user);
+}catch(error)
+{
+    res.status(200).send(error.message)
+}
 
 }
 
@@ -47,16 +60,14 @@ const getUser=async function(req,res)
 // error.
 const updateUser=async function(req,res)
 {
-    const a=req.params.userId;
+    try{const a=req.params.userId;
     const body=req.body;
-    const token=req.token;
-    // const x=jwt.verify(token,'myFirstToken');
-    // if(x.userId != a)
-    // {
-    //     return res.send("Error : Not Authorised !!");
-    // }
     const update=await usermodel.findOneAndUpdate({_id:a},{$set:{age:body.age}},{new:true});
-    res.send(update);
+    return res.send(update);}
+    catch(error)
+    {
+        res.send(error.message)
+    }
 }
 
 //************************************************************************************** */
@@ -67,11 +78,15 @@ const updateUser=async function(req,res)
 
 const deleteUser=async function(req,res)
 {
-   const a=req.params.userId;
+   try{const a=req.params.userId;
     
     const oldStatus=await usermodel.findOne({_id:a}).select({isDeleted:1});
     const deleteStatus=await usermodel.findOneAndUpdate({_id:a},{$set:{isDeleted:true}},{new:true});
-    res.send({oldStatus:oldStatus,deleteStatus:deleteStatus})
+    res.send({oldStatus:oldStatus,deleteStatus:deleteStatus})}
+    catch(error)
+    {
+        res.status(400).send(error.message)
+    }
     
 }
 module.exports={userCreate,loginuser,getUser,updateUser,deleteUser}
